@@ -1,0 +1,10 @@
+
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t yzip/docker-playing-around -f Dockerfile.dev
+
+script:
+  -- docker run -e CI=true yzip/docker-playing around npm run test
