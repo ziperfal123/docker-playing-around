@@ -3,8 +3,21 @@ sudo: required
 services:
   - docker
 
-before_install:
+before_install: #Things that needs to happen before our test suits are starting to run.
   - docker build -t yzip/docker-playing-around -f Dockerfile.dev .
 
 script:
   - docker run -e CI=true yzip/docker-playing-around npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-west-1"
+  app: "docker-playing-around"
+  env: "DockerPlayingAround-env"
+  bucket_name: "elasticbeanstalk-eu-west-1-771514942430"
+  bucket_pat: "docker-playing-around"
+  on:
+    branch: master
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
